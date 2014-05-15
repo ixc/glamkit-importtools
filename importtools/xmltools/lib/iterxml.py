@@ -37,6 +37,9 @@ def _fast_iter(context, callable_start, callable_end, *args, **kwargs):
         _iter_count += 1
         if _iter_count % 10000 == 0:
             sys.stderr.write("processing %s elements...\n" % _iter_count)
+        # Work around bug #1185701 by bailing out after the end of the document root.
+        if elem.getparent() is None:
+            break
     del context
     return _iter_count
 
